@@ -20,10 +20,10 @@ namespace Inl3
     /// </summary>
     public partial class MainWindow : Window
     {
-        int clicked = 1;
+        int clicked = 0;
         int redGained = 0;
         int blackGained = 0;
-
+        int castsLeft = 10;
         public MainWindow()
         {
             InitializeComponent();
@@ -32,17 +32,25 @@ namespace Inl3
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            if (clicked > 10)
-            { txtBlockLeft.Text = "You can only play 10 times!";
-                btn.IsEnabled = false;
+            Random number = new Random();
+            int i = number.Next(1, 3);
+
+            if (clicked == 9)
+            {
+                clicked++;
+                txtBlockLeft.Text = "You can only play 10 times!";
+                if (i == 1) redGained++;
+                else if (i == 2) blackGained++;
+
                 txtResult.Text = $"{redGained} red wins; {blackGained} black wins";
+               
+
             } 
             else
             {
-                Random number = new Random();
-                int i = number.Next(1, 3);
+                
 
-                txtBlockLeft.Text = $"The game played {clicked++} times";
+                txtBlockLeft.Text = $"The game played {++clicked} times";
 
 
                 if (i == 1)
@@ -57,9 +65,11 @@ namespace Inl3
                     ellips.Fill = Brushes.Black;
                     txtResult.Text = "Black color win";
                     blackGained++;
-                }
-                
+                }                
             }
+            castsLeft--; castsLeftBlock.Text = $"{castsLeft} casts left";
+
+            if(clicked == 10) btn.IsEnabled = false;
 
         }
     }
